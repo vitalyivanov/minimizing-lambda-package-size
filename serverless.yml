@@ -1,0 +1,52 @@
+service: minimizing-lambda-package-size
+
+plugins:
+  - serverless-plugin-typescript
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  environment:
+    TABLE_NAME: ${opt:stage, self:provider.stage}-Items
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:GetItem
+        - dynamodb:Scan
+        - dynamodb:PutItem
+        - dynamodb:DeleteItem
+        - dynamodb:UpdateItem
+      Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TABLE_NAME}"
+
+functions:
+  authorizer:
+    handler: src/authorizer.default
+
+  graphql:
+    handler: src/handler.graphql
+    events:
+      - http:
+          path: /
+          method: GET
+          cors: true
+      - http:
+          authorizer: authorizer
+          path: /
+          method: POST
+          cors: true
+
+resources:
+  Resources:
+    ItemsTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        TableName: ${self:provider.environment.TABLE_NAME}
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
