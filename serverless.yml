@@ -1,7 +1,7 @@
 service: minimizing-lambda-package-size
 
 plugins:
-  - serverless-plugin-typescript
+  - serverless-webpack
 
 provider:
   name: aws
@@ -17,6 +17,10 @@ provider:
         - dynamodb:DeleteItem
         - dynamodb:UpdateItem
       Resource: "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.TABLE_NAME}"
+
+custom:
+  webpack:
+    includeModules: true
 
 functions:
   authorizer:

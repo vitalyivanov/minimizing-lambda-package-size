@@ -15,7 +15,10 @@
     "aws-sdk": "^2.593.0",
     "serverless": "^1.60.0",
     "serverless-offline": "^5.12.1",
-    "serverless-plugin-typescript": "^1.1.9",
-    "typescript": "^3.7.3"
+    "serverless-webpack": "^5.3.1",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.7.3",
+    "webpack": "^4.41.4",
+    "webpack-node-externals": "^1.7.2"
   }
 }
