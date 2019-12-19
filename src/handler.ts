@@ -27,7 +27,8 @@ const typeDefs = `
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  playground: true
 })
 
 export const graphql = server.createHandler({
