@@ -22,6 +22,9 @@ custom:
   webpack:
     includeModules: true
 
+package:
+  individually: true
+
 functions:
   authorizer:
     handler: src/authorizer.default
